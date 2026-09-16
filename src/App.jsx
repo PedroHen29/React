@@ -1,30 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddTask from "./components/AddTask";
 import Tasks from "./components/Tasks";
-import {v4} from 'uuid';
+import { v4 } from "uuid";
 function App() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Estudar Programação",
-      description:
-        "Estudar programação para me tornar um desenvolvedor FullStack",
-      isCompleted: false,
-    },
-    {
-      id: 2,
-      title: "Assistir o filme",
-      description:
-        "Assitir filme para me tornar um grande especialista no assunto",
-      isCompleted: false,
-    },
-    {
-      id: 3,
-      title: "Limpar a casa",
-      description: "Limpar toda a casa porque hoje tem visita",
-      isCompleted: false,
-    },
-  ]);
+  const [tasks, setTasks] = useState(
+    JSON.parse(localStorage.getItem("tasks")) || [],
+  );
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
 
   function onTaskClick(taskId) {
     const newTasks = tasks.map((task) => {
@@ -44,14 +29,14 @@ function App() {
     setTasks(newTasks);
   }
 
-  function onAddtaskSubmit(title, description){
+  function onAddtaskSubmit(title, description) {
     const newTask = {
       id: v4(),
       title: title,
       description: description,
-      isCompleted: false
-    }
-    setTasks([...tasks, newTask])
+      isCompleted: false,
+    };
+    setTasks([...tasks, newTask]);
   }
   return (
     <div className="w-screen h-screen bg-gray-700 flex justify-center p-6 ">
